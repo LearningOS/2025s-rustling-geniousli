@@ -3,10 +3,36 @@
 	This problem requires you to implement a sorting algorithm
 	you can use bubble sorting, insertion sorting, heap sorting, etc.
 */
-// I AM NOT DONE
 
-fn sort<T>(array: &mut [T]){
-	//TODO
+
+fn sort<T: PartialOrd  + Copy>(array: &mut [T]) {
+    quick_sort(array, 0, array.len() - 1);
+}
+fn quick_sort<T: PartialOrd + Copy>(vec: &mut [T], left: usize, right: usize) {
+    if left > right {
+        return;
+    }
+    let mut slow = left;
+    let mut fast = slow + 1;
+
+    while fast <= right {
+        if vec[fast] <= vec[left] {
+            slow += 1;
+            let infer = vec[slow];
+            vec[slow] = vec[fast];
+            vec[fast] = infer;
+        }
+        fast += 1;
+    }
+
+    let infer = vec[slow];
+    vec[slow] = vec[left];
+    vec[left] = infer;
+    if slow >= 1 {
+        quick_sort(vec, left, slow - 1);
+    }
+
+    quick_sort(vec, slow + 1, right);
 }
 #[cfg(test)]
 mod tests {
